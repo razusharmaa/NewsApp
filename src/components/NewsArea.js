@@ -13,13 +13,14 @@ export default class NewsArea extends Component {
     */
 
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       ARTICLESx: [],
       loading: false,
       currentPage: 1,
     }
+    document.title=`NewsX - ${this.props.category}`
   }
 
 
@@ -39,7 +40,11 @@ export default class NewsArea extends Component {
 
   async componentDidMount() {
 
-    this.DataFetch(this.currentPage);
+    this.DataFetch(this.state.currentPage);
+  }
+
+  categoryC =(text)=>{
+   return text[0].toUpperCase() + text.substring(1);
   }
 
   handelNextBtn = async () => {
@@ -60,12 +65,12 @@ export default class NewsArea extends Component {
         <>
           {this.state.loading && <Spinner mode={true}></Spinner>}
           {!this.state.loading && <div className="container my-3">
-            <h2>NewsX - Top heading.</h2>
+            <h2 className="text-center mb-4">NewsX - Top heading on {this.categoryC(this.props.category)} </h2>
             <div className="row">
               {this.state.ARTICLESx.length > 0 && this.state.ARTICLESx.map((element) => {
                 if (element.urlToImage) {
                   return <div className="col-md-4 mb-3" key={element.url}>
-                    <NewsItem themeTxt={this.props.themeTxt} title={element.title ? element.title.slice(0, 60) : ""} description={element.description ? element.description.slice(0, 88) : ""} articleLink={element.url} imageURL={element.urlToImage} />
+                    <NewsItem themeTxt={this.props.themeTxt} title={element.title ? element.title.slice(0, 60) : ""} description={element.description ? element.description.slice(0, 88) : ""} articleLink={element.url} imageURL={element.urlToImage} author={element.author} time={element.publishedAt} source={element.source.name} />
                   </div>
                 }
               })}

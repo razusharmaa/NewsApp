@@ -1,18 +1,18 @@
-import React, { Component } from 'react'
-import NavBar from './components/NavBar'
-import NewsArea from './components/NewsArea'
-import Spinner from './components/Spinner'
-import PropTypes from 'prop-types'
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import NavBar from './components/NavBar';
+import NewsArea from './components/NewsArea';
+import Spinner from './components/Spinner';
+import PropTypes from 'prop-types';
+import { Route, BrowserRouter, Routes } from "react-router-dom";
 
-
-export default class App extends Component {
-
+class App extends Component {
   static defaultProps = {
-    category:'general'
-
+    category: 'general'
   };
+
   static propTypes = {
-    category:PropTypes.string,
+    category: PropTypes.string,
   };
 
   constructor(props) {
@@ -25,6 +25,10 @@ export default class App extends Component {
     this.spinnerMode = this.spinnerMode.bind(this);
     this.themecontrol = this.themecontrol.bind(this);
   }
+
+ 
+  
+
   themecontrol() {
     if (this.state.theme) {
       document.body.style.backgroundColor = 'white';
@@ -35,10 +39,9 @@ export default class App extends Component {
     }
     this.setState(prevState => ({
       theme: !prevState.theme,
-      themeTxt: this.state.theme ? 'light' : 'dark'
-    }) );
+      themeTxt: prevState.theme ? 'light' : 'dark'
+    }));
   }
-
 
   spinnerMode() {
     this.setState(prevState => ({
@@ -47,13 +50,23 @@ export default class App extends Component {
   }
 
   render() {
-    return (
-      <div>
-        <NavBar themecontrol={this.themecontrol} themeTxt={this.state.themeTxt} />
-        <Spinner mode={this.state.mode1} themeMode={this.props.theme} themeTxt={this.state.themeTxt} />
-        <NewsArea category='sports' turnS={this.spinnerMode} themeMode={this.props.theme} themeTxt={this.state.themeTxt} />
 
-      </div>
-    )
+    return (
+      <BrowserRouter>
+        <NavBar themecontrol={this.themecontrol} themeTxt={this.state.themeTxt} />
+        <Spinner mode={this.state.mode1} themeMode={this.state.theme} themeTxt={this.state.themeTxt} />
+        <Routes>        
+            <Route exact path="/" element={<NewsArea key='mainGeneral' category={this.props.category} turnS={this.spinnerMode} themeMode={this.state.theme} themeTxt={this.state.themeTxt} />} />
+            <Route exact path="/business" element={<NewsArea key='business' category='business' turnS={this.spinnerMode} themeMode={this.state.theme} themeTxt={this.state.themeTxt} />} />
+            <Route exact path="/entertainment" element={<NewsArea key='entertainment' category='entertainment' turnS={this.spinnerMode} themeMode={this.state.theme} themeTxt={this.state.themeTxt} />} />
+            <Route exact path="/health" element={<NewsArea key='health' category='health' turnS={this.spinnerMode} themeMode={this.state.theme} themeTxt={this.state.themeTxt} />} />
+            <Route exact path="/science" element={<NewsArea key='science' category='science' turnS={this.spinnerMode} themeMode={this.state.theme} themeTxt={this.state.themeTxt} />} />
+            <Route exact path="/sports" element={<NewsArea key='sports' category='sports' turnS={this.spinnerMode} themeMode={this.state.theme} themeTxt={this.state.themeTxt} />} />
+            <Route exact path="/technology" element={<NewsArea key='technology' category='technology' turnS={this.spinnerMode} themeMode={this.state.theme} themeTxt={this.state.themeTxt} />} />
+          </Routes>
+      </BrowserRouter>
+    );
   }
 }
+
+export default App;
