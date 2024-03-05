@@ -1,72 +1,58 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
 import NavBar from './components/NavBar';
 import NewsArea from './components/NewsArea';
-import Spinner from './components/Spinner';
 import PropTypes from 'prop-types';
 import { Route, BrowserRouter, Routes } from "react-router-dom";
+import LoadingBar from 'react-top-loading-bar'
 
-class App extends Component {
-  static defaultProps = {
-    category: 'general'
-  };
+const App = (props) => {
+  const [theme, setTheme] = useState(false);
+  const [themeTxt, setThemeTxt] = useState('light');
+  const [progress, setProgress] = useState(0)
 
-  static propTypes = {
-    category: PropTypes.string,
-  };
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      mode1: false,
-      theme: false,
-      themeTxt: 'light'
-    };
-    this.spinnerMode = this.spinnerMode.bind(this);
-    this.themecontrol = this.themecontrol.bind(this);
-  }
-
- 
-  
-
-  themecontrol() {
-    if (this.state.theme) {
+  const themecontrol = () => {
+    if (theme) {
       document.body.style.backgroundColor = 'white';
       document.body.style.color = 'black';
     } else {
       document.body.style.backgroundColor = 'black';
       document.body.style.color = 'white';
     }
-    this.setState(prevState => ({
-      theme: !prevState.theme,
-      themeTxt: prevState.theme ? 'light' : 'dark'
-    }));
+    setTheme(!theme);
+    setThemeTxt(theme ? 'light' : 'dark');
   }
 
-  spinnerMode() {
-    this.setState(prevState => ({
-      mode1: !prevState.mode1
-    }));
+  const runLoading = (per) => {
+    setProgress(per)
   }
 
-  render() {
-
-    return (
-      <BrowserRouter>
-        <NavBar themecontrol={this.themecontrol} themeTxt={this.state.themeTxt} />
-        <Spinner mode={this.state.mode1} themeMode={this.state.theme} themeTxt={this.state.themeTxt} />
-        <Routes>        
-            <Route exact path="/" element={<NewsArea key='mainGeneral' category={this.props.category} turnS={this.spinnerMode} themeMode={this.state.theme} themeTxt={this.state.themeTxt} />} />
-            <Route exact path="/business" element={<NewsArea key='business' category='business' turnS={this.spinnerMode} themeMode={this.state.theme} themeTxt={this.state.themeTxt} />} />
-            <Route exact path="/entertainment" element={<NewsArea key='entertainment' category='entertainment' turnS={this.spinnerMode} themeMode={this.state.theme} themeTxt={this.state.themeTxt} />} />
-            <Route exact path="/health" element={<NewsArea key='health' category='health' turnS={this.spinnerMode} themeMode={this.state.theme} themeTxt={this.state.themeTxt} />} />
-            <Route exact path="/science" element={<NewsArea key='science' category='science' turnS={this.spinnerMode} themeMode={this.state.theme} themeTxt={this.state.themeTxt} />} />
-            <Route exact path="/sports" element={<NewsArea key='sports' category='sports' turnS={this.spinnerMode} themeMode={this.state.theme} themeTxt={this.state.themeTxt} />} />
-            <Route exact path="/technology" element={<NewsArea key='technology' category='technology' turnS={this.spinnerMode} themeMode={this.state.theme} themeTxt={this.state.themeTxt} />} />
-          </Routes>
-      </BrowserRouter>
-    );
-  }
+  return (
+    <BrowserRouter>
+      <NavBar themecontrol={themecontrol} themeTxt={themeTxt} />
+      <LoadingBar
+        color='#f11946'
+        progress={progress}
+        onLoaderFinished={() => setProgress(0)}
+      />
+      <Routes>        
+          <Route exact path="/" element={<NewsArea runProgress={runLoading}  key='mainGeneral' category={props.category}  themeMode={theme} themeTxt={themeTxt} />} />
+          <Route exact path="/business" element={<NewsArea runProgress={runLoading}  key='business' category='business'  themeMode={theme} themeTxt={themeTxt} />} />
+          <Route exact path="/entertainment" element={<NewsArea runProgress={runLoading}  key='entertainment' category='entertainment'  themeMode={theme} themeTxt={themeTxt} />} />
+          <Route exact path="/health" element={<NewsArea runProgress={runLoading}  key='health' category='health'  themeMode={theme} themeTxt={themeTxt} />} />
+          <Route exact path="/science" element={<NewsArea runProgress={runLoading}  key='science' category='science'  themeMode={theme} themeTxt={themeTxt} />} />
+          <Route exact path="/sports" element={<NewsArea runProgress={runLoading}  key='sports' category='sports'  themeMode={theme} themeTxt={themeTxt} />} />
+          <Route exact path="/technology" element={<NewsArea runProgress={runLoading}  key='technology' category='technology'  themeMode={theme} themeTxt={themeTxt} />} />
+        </Routes>
+    </BrowserRouter>
+  );
 }
+
+App.defaultProps = {
+  category: 'general'
+};
+
+App.propTypes = {
+  category: PropTypes.string,
+};
 
 export default App;

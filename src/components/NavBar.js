@@ -1,22 +1,15 @@
-import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
+import React from 'react'
+import { NavLink } from 'react-router-dom'
 
-
-
-export default class NavBar extends Component {
-
-
-
-  render() {
-    return (
-
-      <nav className="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme={this.props.themeTxt}>
+export default function NavBar(props) {
+  return (
+      <nav className="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme={props.themeTxt}>
         <div className="container-fluid">
-          <Link className="navbar-brand" to="#">NewsX</Link>
+          <NavLink className="navbar-brand" to="/">NewsX</NavLink>
 
 
           <div className="form-check form-switch">
-            <input className="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked={this.props.theme} onClick={this.props.themecontrol} />
+            <input className="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked={props.theme} onClick={props.themecontrol} />
 
             <label className="form-check-label" htmlFor="flexSwitchCheckChecked"></label>
           </div>
@@ -28,14 +21,14 @@ export default class NavBar extends Component {
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               <li className="nav-item">
-                <Link className="nav-link active"  aria-current="page" to="/">Home</Link>
+                <NavLink className="nav-link active"  aria-current="page" to="/">Home</NavLink>
               </li>
-              <li className="nav-item"><Link  className="nav-link" to="/business">Business</Link></li>
-              <li className="nav-item"><Link  className="nav-link" to="/entertainment">Entertainment</Link></li>
-              <li className="nav-item"><Link  className="nav-link" to="/health">Health</Link></li>
-              <li className="nav-item"><Link  className="nav-link" to="/science">Science</Link></li>
-              <li className="nav-item"><Link  className="nav-link" to="/sports">Sports</Link></li>
-              <li className="nav-item"><Link  className="nav-link" to="/technology">Technology</Link></li>
+              <li className="nav-item"><NavLink  className="nav-link" to="/business">Business</NavLink></li>
+              <li className="nav-item"><NavLink  className="nav-link" to="/entertainment">Entertainment</NavLink></li>
+              <li className="nav-item"><NavLink  className="nav-link" to="/health">Health</NavLink></li>
+              <li className="nav-item"><NavLink  className="nav-link" to="/science">Science</NavLink></li>
+              <li className="nav-item"><NavLink  className="nav-link" to="/sports">Sports</NavLink></li>
+              <li className="nav-item"><NavLink  className="nav-link" to="/technology">Technology</NavLink></li>
 
             </ul>
             <form className="d-flex" role="search">
@@ -47,7 +40,5 @@ export default class NavBar extends Component {
       </nav>
 
 
-
-    )
-  }
+)
 }
